@@ -1,4 +1,4 @@
-# BirdNET Outpost
+# BirdNET Scout
 
 Prerequisites
 

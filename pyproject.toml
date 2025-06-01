@@ -1,12 +1,18 @@
 [project]
-name = "birdnet-server"
+name = "birdnet-scout"
 version = "0.1.0"
 description = ""
 authors = [{ name = "Michael Narciso", email = "michael@freetolearn.dev" }]
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
-dependencies = ["sounddevice (>=0.5.2,<0.6.0)", "scipy (>=1.15.3,<2.0.0)", "birdnet (>=0.1.7,<0.2.0)", "black (>=25.1.0,<26.0.0)", "loguru (>=0.7.3,<0.8.0)"]
+dependencies = [
+  "sounddevice (>=0.5.2,<0.6.0)",
+  "scipy (>=1.15.3,<2.0.0)",
+  "birdnet (>=0.1.7,<0.2.0)",
+  "black (>=25.1.0,<26.0.0)",
+  "loguru (>=0.7.3,<0.8.0)",
+]
 
 
 [build-system]

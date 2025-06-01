@@ -1,5 +1,5 @@
 """
-This is the main entry point for the Outpost application that starts the
+This is the main entry point for the Scout application that starts the
 recorder and analyzer processes.
 """
 
