@@ -31,8 +31,10 @@ def start_analyzer():
         CREATE TABLE IF NOT EXISTS predictions (
             recording_key TEXT,
             interval TEXT,
-            prediction TEXT,
-            confidence REAL,
+            scientific_name TEXT,
+            common_name TEXT,
+            audio_confidence REAL,
+            location_confidence REAL,
             created_at TIMESTAMP
         )
         """

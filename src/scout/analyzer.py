@@ -7,12 +7,13 @@ from datetime import datetime
 from pathlib import Path
 
 from birdnet import SpeciesPredictions, predict_species_within_audio_file  # type: ignore
+from birdnet.location_based_prediction import predict_species_at_location_and_time  # type: ignore
 from loguru import logger
 
 recordings_dir = Path("recordings")
 recordings_dir.mkdir(exist_ok=True)
 
-PREDICTION_BLACKLIST = ["Dog_", "Human ", "Engine_", "Gun_"]
+PREDICTION_BLACKLIST = ["Dog", "Human ", "Engine", "Gun"]
 
 
 def is_invalid_prediction(prediction: str) -> bool:
@@ -22,11 +23,27 @@ def is_invalid_prediction(prediction: str) -> bool:
     return any(prediction.startswith(blacklist) for blacklist in PREDICTION_BLACKLIST)
 
 
-def within_confidence_threshold(confidence: float) -> bool:
-    """
-    Check if the confidence level is above the threshold.
-    """
-    return confidence > 0.4
+def get_location_species():
+    # get calendar week
+    week = datetime.now().isocalendar()[1]
+
+    # Defaults to Columbia, one of the most biodiverse bird regions in the world
+    lat, long = os.environ.get("BIRDNET_SCOUT_COORDINATES", "4.5709,74.2973").split(",")
+
+    results = predict_species_at_location_and_time(
+        float(lat), float(long), week=week
+    ).items()
+
+    species = {}
+
+    for prediction, confidence in results:
+        species[prediction] = float(confidence)
+
+    logger.debug(
+        f"Found {len(species)} species at location ({lat}, {long}) for week {week}."
+    )
+
+    return species
 
 
 def analyze(db: sqlite3.Connection):
@@ -40,34 +57,38 @@ def analyze(db: sqlite3.Connection):
 
     cursor = db.cursor()
 
+    location_species = get_location_species()
+
     for filename in wav_files:
-        logger.debug("Analyzing recording {filename}")
+        logger.debug(f"Analyzing recording {filename}")
         audio_path = recordings_dir / filename
-        predictions = SpeciesPredictions(predict_species_within_audio_file(audio_path))
+        predictions = SpeciesPredictions(
+            predict_species_within_audio_file(audio_path, min_confidence=0.5)
+        )
 
         count = 0
         for interval, result in predictions.items():
-            for prediction, confidence in result.items():
-                if not within_confidence_threshold(confidence):
-                    logger.debug(
-                        f"Skipping low confidence prediction: {prediction} ({confidence})"
-                    )
-                    continue
+            for prediction, audio_confidence in result.items():
+                scientific_name, common_name = prediction.split("_")
 
-                if is_invalid_prediction(prediction):
+                if is_invalid_prediction(scientific_name):
                     logger.debug(f"Skipping blacklisted prediction: {prediction}")
                     continue
 
+                loc_confidence = location_species.get(prediction, 0)
+
                 cursor.execute(
                     """
-                    INSERT INTO predictions (recording_key, interval, prediction, confidence, created_at)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO predictions (recording_key, interval, scientific_name, common_name, audio_confidence, location_confidence, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         filename,
                         f"{interval[0]},{interval[1]}",
-                        prediction,
-                        float(confidence),
+                        scientific_name,
+                        common_name,
+                        float(audio_confidence),
+                        loc_confidence,
                         datetime.now().isoformat(),
                     ),
                 )
