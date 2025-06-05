@@ -3,7 +3,6 @@ This is the main entry point for the Scout application that starts the
 recorder and analyzer processes.
 """
 
-import sqlite3
 import time
 from multiprocessing import Process
 
@@ -24,25 +23,8 @@ def start_analyzer():
     """Start the audio analyzer process."""
     logger.debug("Starting audio analyzer...")
 
-    db = sqlite3.connect("birdnet.db")
-    cursor = db.cursor()
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS predictions (
-            recording_key TEXT,
-            interval TEXT,
-            scientific_name TEXT,
-            common_name TEXT,
-            audio_confidence REAL,
-            location_confidence REAL,
-            created_at TIMESTAMP
-        )
-        """
-    )
-    db.commit()
-
     while True:
-        analyzer.analyze(db)
+        analyzer.analyze()
         time.sleep(30)
 
 
