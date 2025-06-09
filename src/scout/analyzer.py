@@ -98,13 +98,12 @@ def analyze():
                         "audio_confidence": float(audio_confidence),
                         "location": coordinates,
                         "location_confidence": loc_confidence,
-                        "created_at": datetime.now(),
+                        "created_at": datetime.utcnow(),
                     }
                 )
 
                 count += 1
 
         logger.info(f"Inserted {count} predictions for {filename} into the database.")
-
         os.remove(audio_path)
         logger.debug(f"Removed recording {filename} after analysis.")

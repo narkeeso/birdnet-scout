@@ -1,0 +1,7 @@
+procs:
+  server:
+    shell: poetry run python -m src.scout.server
+  analyzer:
+    env:
+      BIRDNET_SCOUT_COORDINATES: 33.88224,-117.35727
+    shell: poetry run python -m src.scout.main

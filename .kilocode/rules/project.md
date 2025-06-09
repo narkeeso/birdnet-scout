@@ -7,6 +7,7 @@ This is a wrapper app around birdnet to create a daemon that can listen to audio
 - Use poetry v2
 - See pyproject.toml for project configuration, python version
 - Commands to run python should be done using poetry
+- Don't ask to run python code, I am managing process myself
 
 # Python Imports
 

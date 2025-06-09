@@ -17,7 +17,7 @@ def record():
     """
     Record audio for a specified duration and save it to a file in the recordings directory.
     """
-    duration = 60  # seconds
+    duration = 12  # seconds
     recording = sd.rec(int(duration * 44100), samplerate=44100, channels=1)
 
     logger.debug(f"Recording for {duration} seconds to {sd.default.device}")

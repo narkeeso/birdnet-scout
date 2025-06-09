@@ -3,6 +3,7 @@ This is the main entry point for the Scout application that starts the
 recorder and analyzer processes.
 """
 
+import os
 import time
 from multiprocessing import Process
 
@@ -11,35 +12,33 @@ from loguru import logger
 from . import analyzer, recorder
 
 
-def start_recorder():
-    """Start the audio recorder process."""
-    logger.debug("Starting audio recorder...")
+env = os.getenv("ENVIRONMENT", "development")
 
+
+def recorder_task():
+    """Start the audio recorder process."""
+    logger.info("Starting recorder process...")
     while True:
         recorder.record()
 
 
-def start_analyzer():
+def analyzer_task():
     """Start the audio analyzer process."""
-    logger.debug("Starting audio analyzer...")
-
+    logger.info("Starting analyzer process...")
     while True:
         analyzer.analyze()
-        time.sleep(30)
+        time.sleep(2)
 
 
-w1 = Process(target=start_recorder)
-w2 = Process(target=start_analyzer)
+p1 = Process(target=recorder_task)
+p2 = Process(target=analyzer_task)
 
-w1.start()
-w2.start()
+p1.start()
+p2.start()
 
 try:
-    while True:
-        pass
+    p1.join()
+    p2.join()
 except KeyboardInterrupt:
-    w1.terminate()
-    w2.terminate()
-
-    w1.join()
-    w2.join()
+    p1.terminate()
+    p2.terminate()
