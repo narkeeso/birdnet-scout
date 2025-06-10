@@ -15,3 +15,5 @@
 make install
 make dev
 ```
+
+![Screenshot from 2025-06-09 23-43-30](https://github.com/user-attachments/assets/ab372d16-2968-45ad-bae3-964f5cd4ae31)
