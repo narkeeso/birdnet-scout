@@ -1,5 +1,5 @@
 <div hx-get="/detections" hx-trigger="every 5s">
-  {% for date, species in detections.items() %}
+  {% for date, species in data.detections.items() %}
     <span class="title is-5">{{ date }}</span>
     <table class="table is-fullwidth">
       <thead>
@@ -17,7 +17,10 @@
         {% for s in species %}
           <tr>
             <td>{{ s.sample_count }}</td>
-            <td>{{ s.common_name }}</td>
+            <td>
+              <a href="https://www.allaboutbirds.org/news/search/?q={{ s.scientific_name | urlencode }}"
+                 target="_blank">{{ s.common_name }}</a>
+            </td>
             <td>{{ s.scientific_name }}</td>
             <td>{{ s.audio_confidence | percentage }}</td>
             <td>{{ s.location_confidence | percentage }}</td>

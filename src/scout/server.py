@@ -1,8 +1,7 @@
 from loguru import logger
 from flask import Flask, render_template
 
-
-from . import filters, database as db
+from . import filters, services
 
 
 app = Flask(__name__)
@@ -11,26 +10,33 @@ app = Flask(__name__)
 filters.register(app)
 
 
+@app.context_processor
+def inject_config():
+    return {"config": services.get_config()}
+
+
 @app.route("/")
 def index():
-    detections = db.get_latest_birds()
-    total_discovered = db.get_total_discovered()
-    return render_template(
-        "index.html", detections=detections, total_discovered=total_discovered
-    )
+    data = {
+        "detections": services.get_latest_detections(),
+        "total_discovered": services.get_total_discovered(),
+    }
+
+    return render_template("index.html", data=data)
 
 
 @app.route("/detections")
 def get_detections():
-    detections = db.get_latest_birds()
-    return render_template("detections.html", detections=detections)
+    data = {"detections": services.get_latest_detections()}
+    return render_template("detections.html", data=data)
 
 
-@app.route("/part/discoveries-count")
-def part_discoveries_count():
-    return render_template("discoveries_badge.html", total=db.get_total_discovered())
+@app.route("/update-location", methods=["POST"])
+def update_location():
+    services.update_location()
+    return ""
 
 
 if __name__ == "__main__":
-    logger.debug("Starting web server...")
+    services.init()
     app.run(host="0.0.0.0", port=5000, debug=True)

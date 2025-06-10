@@ -16,12 +16,16 @@
         <div class="navbar-brand">
           <a href="#" class="navbar-item">
             <div class="navbar-item">
-              <span class="title is-4">Birdnet Scout</span>
+              <span class="title is-5">Birdnet Scout</span>
             </div>
           </a>
         </div>
         <div class="navbar-end">
-          <div class="navbar-item">{% include "discoveries_badge.html" %}</div>
+          <div class="navbar-item">Discovered: {{ data.total_discovered }}</div>
+          <div class="navbar-item">
+            <a hx-post="/update-location" class="button is-ghost" hx-swap="none">Update Location</a>
+          </div>
+          <div class="navbar-item">{{ config.location.city }}, {{ config.location.region }}</div>
         </div>
       </div>
     </nav>

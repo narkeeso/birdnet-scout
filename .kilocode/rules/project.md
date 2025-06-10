@@ -16,3 +16,7 @@ This is a wrapper app around birdnet to create a daemon that can listen to audio
   1. Standard library imports
   2. Third-party imports
   3. Local application/lib
+
+# SQL
+
+- use sqlite compatible dialect
