@@ -1,34 +1,35 @@
-<div hx-get="/detections" hx-trigger="every 5s">
+<div class="panel is-info" hx-get="/detections" hx-trigger="every 5s">
+  <div class="panel-heading">Latest Detections</div>
   {% for date, species in data.detections.items() %}
-    <span class="title is-5">{{ date }}</span>
-    <table class="table is-fullwidth">
-      <thead>
-        <tr>
-          <th>Count</th>
-          <th>Common</th>
-          <th>Scientific</th>
-          <th>A. Score</th>
-          <th>L. Score</th>
-          <th>Coords</th>
-          <th>Detected</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for s in species %}
-          <tr>
-            <td>{{ s.sample_count }}</td>
-            <td>
-              <a href="https://www.allaboutbirds.org/news/search/?q={{ s.scientific_name | urlencode }}"
-                 target="_blank">{{ s.common_name }}</a>
-            </td>
-            <td>{{ s.scientific_name }}</td>
-            <td>{{ s.audio_confidence | percentage }}</td>
-            <td>{{ s.location_confidence | percentage }}</td>
-            <td>{{ s.location }}</td>
-            <td>{{ s.created_at|humanize }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="panel-block">
+      <span class="title is-5">{{ date }}</span>
+    </div>
+    <div class="panel-block">
+      <div class="columns is-flex-grow-1">
+        <div class="column is-3">
+          <strong>Common</strong>
+        </div>
+        <div class="column is-3"><strong>Scientific</strong></div>
+        <div class="column is-1"><strong>Count</strong></div>
+        <div class="column"><strong>A. Score</strong></div>
+        <div class="column"><strong>L. Score</strong></div>
+        <div class="column is-2"><strong>Detected</strong></div>
+      </div>
+    </div>
+    {% for s in species %}
+      <div class="panel-block">
+        <div class="columns is-flex-grow-1">
+          <div class="column is-3">
+            <a href="https://www.allaboutbirds.org/news/search/?q={{ s.scientific_name | urlencode }}"
+               target="_blank">{{ s.common_name }}</a>
+          </div>
+          <div class="column is-3">{{ s.scientific_name }}</div>
+          <div class="column is-1">{{ s.sample_count }}</div>
+          <div class="column">{{ s.audio_confidence | percentage }}</div>
+          <div class="column">{{ s.location_confidence | percentage }}</div>
+          <div class="column is-2">{{ s.created_at|humanize }}</div>
+        </div>
+      </div>
+    {% endfor %}
   {% endfor %}
 </div>
