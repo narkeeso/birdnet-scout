@@ -9,15 +9,17 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='stylesheet.css') }}">
   </head>
   <body>
     <nav class="navbar">
       <div class="container">
         <div class="navbar-brand">
           <a href="#" class="navbar-item">
-            <div class="navbar-item">
-              <span class="title is-5">Birdnet Scout</span>
-            </div>
+            <img src="{{ url_for('static', filename='logo.png') }}"
+                 alt="Birdnet Scout Logo" />
+            <span class="title is-4">Scout</span>
           </a>
         </div>
         <div class="navbar-end">

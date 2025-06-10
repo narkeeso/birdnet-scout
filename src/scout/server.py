@@ -4,7 +4,7 @@ from flask import Flask, render_template
 from . import filters, services
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../../static")
 
 
 filters.register(app)
