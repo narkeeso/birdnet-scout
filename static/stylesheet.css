@@ -1,3 +1,8 @@
+:root {
+  --bulma-family-primary: InterVariable,SF Pro,Segoe UI,Roboto,Oxygen,Ubuntu,Helvetica Neue,Helvetica,Arial,sans-serif;
+  --bulma-family-secondary: InterVariable,SF Pro,Segoe UI,Roboto,Oxygen,Ubuntu,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
 .navbar-item img, .navbar-item svg {
   --bulma-navbar-item-img-max-height: 4rem
 }

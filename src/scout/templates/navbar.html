@@ -17,7 +17,11 @@
            hx-swap="outerHTML"
            hx-target="#nav">Update Location</a>
       </div>
-      <div class="navbar-item">{{ config.location.city }}, {{ config.location.region }}</div>
+      {% if config.location.city %}
+        <div class="navbar-item">{{ config.location.city }}, {{ config.location.region }}</div>
+      {% else %}
+        <div class="navbar-item">Unknown</div>
+      {% endif %}
     </div>
   </div>
 </nav>
