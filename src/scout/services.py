@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 import arrow
 import requests
@@ -12,6 +11,7 @@ SAMPLE_THRESHOLD = 3
 
 
 def init():
+    database.create_table_detections()
     table = database.db["config"]
     config = table.find_one(id=1)  # type: ignore
     if not config:

@@ -34,7 +34,11 @@ def get_detections():
 @app.route("/update-location", methods=["POST"])
 def update_location():
     services.update_location()
-    return ""
+    data = {
+        "config": services.get_config(),
+        "total_discovered": services.get_total_discovered(),
+    }
+    return render_template("navbar.html", data=data)
 
 
 if __name__ == "__main__":

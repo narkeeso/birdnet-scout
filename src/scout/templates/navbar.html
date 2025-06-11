@@ -1,0 +1,23 @@
+<nav id="nav" class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <a href="#" class="navbar-item">
+        <img src="{{ url_for('static', filename='logo.png') }}"
+             alt="Birdnet Scout Logo"
+             width=""
+             height="" />
+        <span class="title is-4">Scout</span>
+      </a>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">Discovered: {{ data.total_discovered }}</div>
+      <div class="navbar-item">
+        <a hx-post="/update-location"
+           class="button is-ghost"
+           hx-swap="outerHTML"
+           hx-target="#nav">Update Location</a>
+      </div>
+      <div class="navbar-item">{{ config.location.city }}, {{ config.location.region }}</div>
+    </div>
+  </div>
+</nav>
