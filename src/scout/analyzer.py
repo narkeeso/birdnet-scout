@@ -67,7 +67,7 @@ def analyze():
         logger.warning("No location set, skipping location prediction")
 
     for filename in wav_files:
-        recording_start, recording_end = filename.split(".")[0].split("_")
+        recording_start, duration = filename.split(".")[0].split("_")
         logger.debug(f"Analyzing recording {filename}")
         audio_path = recordings_dir / filename
         predictions = SpeciesPredictions(
@@ -92,7 +92,7 @@ def analyze():
                             int(recording_start), tz=timezone.utc
                         ),
                         "recording_end": datetime.fromtimestamp(
-                            int(recording_end), tz=timezone.utc
+                            int(recording_start) + int(duration), tz=timezone.utc
                         ),
                         "interval": f"{interval[0]},{interval[1]}",
                         "scientific_name": scientific_name,

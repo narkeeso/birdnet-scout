@@ -6,7 +6,7 @@ A wrapper around project [BirdNET Analzyer](https://github.com/birdnet-team/Bird
 
 ## Prerequisites
 
-- Install PortAudio library (Linux Only)
+- PulseAudio or arecord
 - Python 3.11+
 - [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
   - Python package manager
@@ -19,3 +19,5 @@ A wrapper around project [BirdNET Analzyer](https://github.com/birdnet-team/Bird
 make install
 make dev
 ```
+
+Access the web UI at `http://localhost:5000`
