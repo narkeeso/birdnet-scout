@@ -2,11 +2,13 @@
 
 import fnmatch
 import os
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 from birdnet import SpeciesPredictions, predict_species_within_audio_file  # type: ignore
 from birdnet.location_based_prediction import predict_species_at_location_and_time  # type: ignore
+from birdnet.models.v2m4.model_v2m4_tflite import AudioModelV2M4TFLite
 from loguru import logger
 
 from .database import db
@@ -71,8 +73,12 @@ def analyze():
         logger.debug(f"Analyzing recording {filename}")
         audio_path = recordings_dir / filename
         predictions = SpeciesPredictions(
-            predict_species_within_audio_file(audio_path, min_confidence=0.5)
+            predict_species_within_audio_file(
+                audio_path, min_confidence=0.5, custom_model=AudioModelV2M4TFLite()
+            )
         )
+
+        logger.info(predictions)
 
         count = 0
         for interval, result in predictions.items():
@@ -109,3 +115,10 @@ def analyze():
         logger.info(f"Inserted {count} predictions for {filename} into the database.")
         os.remove(audio_path)
         logger.debug(f"Removed recording {filename} after analysis.")
+
+
+if __name__ == "__main__":
+    logger.info("Starting analyzer process...")
+    while True:
+        analyze()
+        time.sleep(2)

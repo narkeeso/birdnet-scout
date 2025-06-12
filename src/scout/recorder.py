@@ -2,6 +2,8 @@
 Module for recording audio using arecord and saving it as a WAV file.
 """
 
+import os
+import shutil
 from pathlib import Path
 from time import time
 import subprocess
@@ -35,9 +37,21 @@ def record():
             "1",
             "-r",
             "44100",
-            recording_key,
+            f"/tmp/birdnet/{recording_key}",
         ],
         check=True,
     )
 
+    shutil.move(f"/tmp/birdnet/{recording_key}", recording_key)
+
     logger.debug(f"Recording saved to {recording_key}")
+
+
+if __name__ == "__main__":
+    logger.info("Starting recorder process...")
+
+    # Store in progres recordings here
+    os.makedirs("/tmp/birdnet/recordings", exist_ok=True)
+
+    while True:
+        record()
