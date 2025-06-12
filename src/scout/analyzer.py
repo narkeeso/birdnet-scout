@@ -74,7 +74,7 @@ def analyze():
         audio_path = recordings_dir / filename
         predictions = SpeciesPredictions(
             predict_species_within_audio_file(
-                audio_path, min_confidence=0.5, custom_model=AudioModelV2M4TFLite()
+                audio_path, min_confidence=0.6, custom_model=AudioModelV2M4TFLite()
             )
         )
 
