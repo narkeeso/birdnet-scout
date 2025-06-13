@@ -2,7 +2,6 @@
 
 import fnmatch
 import os
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -17,7 +16,7 @@ from . import services
 recordings_dir = Path("recordings")
 recordings_dir.mkdir(exist_ok=True)
 
-PREDICTION_BLACKLIST = ["Dog", "Human ", "Engine", "Gun"]
+PREDICTION_BLACKLIST = ["Dog", "Human ", "Engine", "Gun", "Siren"]
 DEFAULT_MODEL = AudioModelV2M4TFLite()
 
 
