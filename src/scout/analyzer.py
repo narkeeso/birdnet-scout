@@ -18,6 +18,7 @@ recordings_dir = Path("recordings")
 recordings_dir.mkdir(exist_ok=True)
 
 PREDICTION_BLACKLIST = ["Dog", "Human ", "Engine", "Gun"]
+DEFAULT_MODEL = AudioModelV2M4TFLite()
 
 
 def is_invalid_prediction(prediction: str) -> bool:
@@ -74,7 +75,7 @@ def analyze():
         audio_path = recordings_dir / filename
         predictions = SpeciesPredictions(
             predict_species_within_audio_file(
-                audio_path, min_confidence=0.6, custom_model=AudioModelV2M4TFLite()
+                audio_path, min_confidence=0.6, custom_model=DEFAULT_MODEL
             )
         )
 
@@ -118,7 +119,4 @@ def analyze():
 
 
 if __name__ == "__main__":
-    logger.info("Starting analyzer process...")
-    while True:
-        analyze()
-        time.sleep(2)
+    analyze()
