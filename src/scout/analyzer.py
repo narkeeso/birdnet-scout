@@ -16,7 +16,7 @@ from . import services
 recordings_dir = Path("recordings")
 recordings_dir.mkdir(exist_ok=True)
 
-PREDICTION_BLACKLIST = ["Dog", "Human ", "Engine", "Gun", "Siren"]
+PREDICTION_BLACKLIST = ["Dog", "Human ", "Engine", "Gun", "Siren", "Power tools"]
 DEFAULT_MODEL = AudioModelV2M4TFLite()
 
 
