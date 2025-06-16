@@ -5,3 +5,4 @@ recordings
 *.db
 *.db-*
 *.log
+db.sqlite3

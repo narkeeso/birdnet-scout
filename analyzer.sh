@@ -3,7 +3,6 @@
 
 # Configuration
 RECORDINGS_DIR="recordings"
-PYTHON_SCRIPT="src/scout/recorder.py"
 SLEEP_SECONDS=2
 
 # Handle interrupt signal
@@ -24,8 +23,8 @@ while true; do
 
     # Check if any WAV files were found
     if [ -n "$wav_files" ]; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - Found WAV files, running $PYTHON_SCRIPT..."
-        poetry run python -m src.scout.analyzer
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Found WAV files"
+        poetry run python -m analyzer
     else
         echo "$(date '+%Y-%m-%d %H:%M:%S') - No WAV files found in $RECORDINGS_DIR"
     fi

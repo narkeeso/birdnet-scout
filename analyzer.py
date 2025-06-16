@@ -5,13 +5,12 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
+import requests
 from birdnet import SpeciesPredictions, predict_species_within_audio_file  # type: ignore
 from birdnet.location_based_prediction import predict_species_at_location_and_time  # type: ignore
 from birdnet.models.v2m4.model_v2m4_tflite import AudioModelV2M4TFLite
 from loguru import logger
 
-from .database import db
-from . import services
 
 recordings_dir = Path("recordings")
 recordings_dir.mkdir(exist_ok=True)
@@ -49,15 +48,20 @@ def analyze():
     """
     Analyze audio recordings in the recordings directory and store predictions in the database.
     """
+    session = requests.Session()
+
+    # Get config settings
+    response = session.get("http://localhost:5000/api/config", timeout=5)
+    response.raise_for_status()
+    csrftoken = session.cookies.get("csrftoken")
+    config = response.json()
 
     wav_files = [f for f in os.listdir(recordings_dir) if fnmatch.fnmatch(f, "*.wav")]
-
     logger.debug(f"Found {len(wav_files)} recordings to analyze.")
 
     location_species = {}
     coordinates = None
 
-    config = services.get_config()
     location = config["location"]
     lat = location.get("lat", None)
     long = location.get("lon", None)
@@ -68,51 +72,70 @@ def analyze():
     else:
         logger.warning("No location set, skipping location prediction")
 
+    min_audio_confidence = config.get("min_audio_confidence") / 100
+    min_location_confidence = config.get("min_location_confidence") / 100
+
     for filename in wav_files:
         recording_start, duration = filename.split(".")[0].split("_")
-        logger.debug(f"Analyzing recording {filename}")
+        logger.info(f"Analyzing recording {filename}")
         audio_path = recordings_dir / filename
         predictions = SpeciesPredictions(
             predict_species_within_audio_file(
-                audio_path, min_confidence=0.6, custom_model=DEFAULT_MODEL
+                audio_path,
+                min_confidence=min_audio_confidence,
+                custom_model=DEFAULT_MODEL,
             )
         )
 
-        logger.info(predictions)
+        logger.debug(predictions)
 
-        count = 0
+        detections = []
+
         for interval, result in predictions.items():
             for prediction, audio_confidence in result.items():
                 scientific_name, common_name = prediction.split("_")
 
                 if is_invalid_prediction(scientific_name):
-                    logger.debug(f"Skipping blacklisted prediction: {prediction}")
+                    logger.debug(f"SKIP: blacklisted prediction {prediction}")
                     continue
 
                 loc_confidence = location_species.get(prediction, 0)
+                if loc_confidence < min_location_confidence:
+                    logger.debug(
+                        f"SKIP: Expected min location score {min_location_confidence}, actual: {loc_confidence}"
+                    )
+                    continue
 
-                table = db["detections"]
-                table.insert(  # type: ignore
+                detections.append(
                     {
                         "recording_start": datetime.fromtimestamp(
                             int(recording_start), tz=timezone.utc
-                        ),
+                        ).isoformat(),
                         "recording_end": datetime.fromtimestamp(
                             int(recording_start) + int(duration), tz=timezone.utc
-                        ),
+                        ).isoformat(),
                         "interval": f"{interval[0]},{interval[1]}",
                         "scientific_name": scientific_name,
                         "common_name": common_name,
                         "audio_confidence": float(audio_confidence),
+                        "location_confidence": float(loc_confidence),
                         "location": coordinates,
-                        "location_confidence": loc_confidence,
-                        "created_at": datetime.now(tz=timezone.utc),
                     }
                 )
 
-                count += 1
+        if len(detections) > 0:
+            res = session.post(
+                "http://localhost:5000/api/detections",
+                json=detections,
+                headers={"X-CSRFToken": csrftoken},
+                timeout=10,
+            )
+            res.raise_for_status()
 
-        logger.info(f"Inserted {count} predictions for {filename} into the database.")
+            logger.info(
+                f"Inserted {len(detections)} predictions for {filename} into the database."
+            )
+
         os.remove(audio_path)
         logger.debug(f"Removed recording {filename} after analysis.")
 

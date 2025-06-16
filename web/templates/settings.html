@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="section">
+    <div class="container">
+      <h2 class="title is-2">Settings</h2>
+      <form class="box" hx-put="/">
+        <section>
+          <h3 class="title is-3">Detection</h3>
+          <div class="columns">
+            <div class="column">
+              <label class="label">Minimum Audio Confidence</label>
+              <div class="control">
+                <input name="min_audio_confidence"
+                       class="input"
+                       type="number"
+                       step="1"
+                       min="0"
+                       placeholder="60"
+                       value="{{ config.min_audio_confidence }}" />
+              </div>
+            </div>
+            <div class="column">
+              <label class="label">Minimum Location Confidence</label>
+              <div class="control">
+                <input name="min_location_confidence"
+                       class="input"
+                       type="number"
+                       step="1"
+                       min="0"
+                       placeholder="0"
+                       value="{{ config.min_location_confidence }}" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="button is-primary" disabled>Save</button>
+        </div>
+      </section>
+    </form>
+  </div>
+{% endblock content %}

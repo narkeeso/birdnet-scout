@@ -1,6 +1,6 @@
 procs:
   server:
-    shell: poetry run python -m src.scout.server
+    shell: poetry run python manage.py runserver 0.0.0.0:5000
   analyzer:
     shell: ./analyzer.sh
   recorder:

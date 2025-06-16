@@ -9,15 +9,15 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    {% load static %}
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='fonts/inter.css') }}">
+          href="{% static 'web/fonts/inter.css' %}">
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='stylesheet.css') }}">
+          href="{% static 'web/stylesheet.css' %}">
   </head>
-  <body>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include "navbar.html" %}
-    <section class="section">
-      <div class="container">{% include "detections.html" %}</div>
-    </section>
+    {% block content %}
+    {% endblock content %}
   </body>
 </html>

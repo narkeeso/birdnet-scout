@@ -1,0 +1,9 @@
+[MASTER]
+load-plugins=pylint.extensions.no_self_use, pylint_django
+
+[MESSAGES CONTROL]
+disable=
+    missing-class-docstring,
+    missing-module-docstring,
+    missing-function-docstring,
+    unused-argument
