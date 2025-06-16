@@ -20,7 +20,7 @@
       <div class="panel-block">
         <div class="columns is-flex-grow-1">
           <div class="column is-3">
-            <a href="https://www.allaboutbirds.org/news/search/?q={{ s.scientific_name | urlencode }}"
+            <a href="https://www.allaboutbirds.org/guide/{{ s.common_name | replace("'","") | replace(" ","_") | urlencode }}"
                target="_blank">{{ s.common_name }}</a>
           </div>
           <div class="column is-3">{{ s.scientific_name }}</div>
