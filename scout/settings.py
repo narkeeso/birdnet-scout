@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from typing import List
 from pathlib import Path
 
@@ -26,7 +27,7 @@ SECRET_KEY = "django-insecure-=(!4pu9n0z&kxa^d-sy#1o(o@#g*395oj*ccb%=gjbc0ohe&0&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: List[str] = []
+ALLOWED_HOSTS: List[str] = [os.getenv("BIRDNET_SCOUT_HOSTNAME", "*")]
 
 
 # Application definition
