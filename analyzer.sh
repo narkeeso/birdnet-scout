@@ -8,10 +8,10 @@ SLEEP_SECONDS=2
 # Handle interrupt signal
 trap 'echo "Stopping WAV file monitor..."; exit 0' INT TERM
 
-# Check if recordings directory exists
+# Create recordings directory if it doesn't exist
 if [ ! -d "$RECORDINGS_DIR" ]; then
-    echo "Error: Directory $RECORDINGS_DIR does not exist" >&2
-    exit 1
+    echo "Creating directory $RECORDINGS_DIR..."
+    mkdir -p "$RECORDINGS_DIR"
 fi
 
 echo "Starting WAV file monitor (checking every $SLEEP_SECONDS seconds)..."
