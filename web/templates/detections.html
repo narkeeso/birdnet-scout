@@ -1,7 +1,8 @@
 {% load filters %}
 <div class="panel is-info"
      hx-get="{% url "detections-view" %}"
-     hx-trigger="every 5s">
+     hx-trigger="every 5s"
+     hx-swap="outerHTML">
   <div class="panel-heading is-clearfix">
     <span class="is-pulled-left">Latest Detections</span>
     <span class="is-pulled-right">Discovered: {{ total_discovered }}</span>
