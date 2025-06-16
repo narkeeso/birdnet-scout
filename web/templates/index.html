@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
   <section class="section">
-    <div class="container">{% include "detections.html" %}</div>
+    <div class="container">
+      {% if config.min_location_confidence > 0 and not config.location.city %}
+        <div class="notification is-warning">
+          Your minimum location confidence is <strong>{{ config.min_location_confidence }}%</strong> and have no location set.
+          Either set a location or change your minimum location confidence to 0 to enable detections.
+        </div>
+      {% endif %}
+      {% include "detections.html" %}
+    </div>
   </section>
 {% endblock content %}
