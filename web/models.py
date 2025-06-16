@@ -16,6 +16,7 @@ class ConfigManager(models.Manager):
                 "min_location_confidence": 1,
                 "min_audio_confidence": 70,
                 "min_sample_threshold": 2,
+                "timezone": "US/Pacific",
             },
         )
         return config
@@ -26,6 +27,7 @@ class Config(models.Model):
     min_sample_threshold = models.SmallIntegerField()
     min_audio_confidence = models.SmallIntegerField()
     min_location_confidence = models.SmallIntegerField()
+    timezone = models.CharField(default="US/Pacific")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -34,12 +36,10 @@ class Config(models.Model):
 
 class DetectionQuerySet(models.QuerySet["Detection"]):
     def get_valid(self, config: Config):
+        timezone.activate(config.timezone)
+
         return (
-            self.annotate(
-                date=TruncDate(
-                    "recording_start", tzinfo=timezone.get_current_timezone()
-                )
-            )
+            self.annotate(date=TruncDate("recording_start"))
             .values("scientific_name", "common_name", "date")
             .annotate(
                 sample_count=Count("scientific_name"),
