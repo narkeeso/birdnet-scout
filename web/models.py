@@ -73,6 +73,9 @@ class DetectionManager(models.Manager):
             if detections.get(date) is None:
                 detections[date] = []
 
+            name_slug = row.get("common_name", "").replace("'", "").replace(" ", "_")
+            row["link"] = f"https://www.allaboutbirds.org/guide/{name_slug}"
+
             detections[date].append(row)
         return detections
 

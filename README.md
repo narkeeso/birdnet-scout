@@ -7,7 +7,7 @@ A wrapper around project [BirdNET Analzyer](https://github.com/birdnet-team/Bird
 ## Prerequisites
 
 - PulseAudio or arecord
-- Python 3.11+
+- Python >=3.10,<3.12
 - [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
   - Python package manager
 - [mprocs](https://github.com/pvolok/mprocs)
