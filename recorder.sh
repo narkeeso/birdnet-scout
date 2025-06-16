@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Checking for audio devices..."
-if ! arecord -l | grep -q "card 0"; then
-    echo "Error: No audio device (card 0) found!" >&2
+if ! arecord -l | grep -q "card"; then
+    echo "Error: No audio devices found!" >&2
     echo "Available devices:" >&2
     arecord -l >&2
     exit 1
