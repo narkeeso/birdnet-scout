@@ -33,7 +33,7 @@
     <tbody>
       {% for date, species in detections.items %}
         <tr>
-          <th colspan="6" class="title is-5">{{ date.strftime('%c') }}</th>
+          <th colspan="6" class="title is-5">{{ date|date:"r" }}</th>
         </tr>
         {% for s in species %}
           <tr>
