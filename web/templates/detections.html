@@ -33,7 +33,7 @@
     <tbody>
       {% for date, species in detections.items %}
         <tr>
-          <th colspan="6" class="title is-5">{{ date|date:"r" }}</th>
+          <th colspan="6" class="title is-5">{{ date }}</th>
         </tr>
         {% for s in species %}
           <tr>
@@ -44,7 +44,7 @@
             <td>{{ s.sample_count }}</td>
             <td>{{ s.audio_confidence|percentage }}</td>
             <td>{{ s.location_confidence|percentage }}</td>
-            <td title="{{ date }}">{{ s.last_detected_at|humanize }}</td>
+            <td title="{{ s.last_detected_at }}">{{ s.last_detected_at|humanize }}</td>
           </tr>
         {% endfor %}
       {% endfor %}
