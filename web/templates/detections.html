@@ -7,7 +7,7 @@
     <span class="is-pulled-left">Latest Detections</span>
     <span class="is-pulled-right">Discovered: {{ total_discovered }}</span>
   </div>
-  <table class="table">
+  <table class="table is-fullwidth">
     <thead>
       <tr>
         <th>
@@ -32,7 +32,9 @@
     </thead>
     <tbody>
       {% for date, species in detections.items %}
-        <tr><th colspan="6">{{ date }}</th></tr>
+        <tr>
+          <th colspan="6" class="title is-5">{{ date }}</th>
+        </tr>
         {% for s in species %}
           <tr>
             <td>
@@ -42,7 +44,7 @@
             <td>{{ s.sample_count }}</td>
             <td>{{ s.audio_confidence|percentage }}</td>
             <td>{{ s.location_confidence|percentage }}</td>
-            <td>{{ s.last_detected_at|humanize }}</td>
+            <td title="{{ date }}">{{ s.last_detected_at|humanize }}</td>
           </tr>
         {% endfor %}
       {% endfor %}
