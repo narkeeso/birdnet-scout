@@ -1610,6 +1610,20 @@ test = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "ini2toml[lite] (>=
 type = ["importlib_metadata (>=7.0.2) ; python_version < \"3.10\"", "jaraco.develop (>=7.21) ; sys_platform != \"cygwin\"", "mypy (==1.14.*)", "pytest-mypy"]
 
 [[package]]
+name = "silence-tensorflow"
+version = "1.2.3"
+description = "Simple python package to shut up Tensorflow warnings and logs."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "silence_tensorflow-1.2.3.tar.gz", hash = "sha256:4c55a32951af577e68e47e48675199b49944fd0fe042a026c069148bbef1d293"},
+]
+
+[package.extras]
+test = ["pytest", "pytest-readme", "tensorflow", "validate_version_code"]
+
+[[package]]
 name = "six"
 version = "1.17.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -2175,4 +2189,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.12"
-content-hash = "7ed8ed2776bf3d018d5c34347d0a6490387d5ec0a4f9167ed8a2e8a7c868fbb8"
+content-hash = "6a37f1d93a789292fa01aca7ce4bcc49cde041302f8313304fd4972d533a5600"

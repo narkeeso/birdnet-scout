@@ -28,7 +28,9 @@ while true; do
     # Create recording filename
     RECORDING_KEY="${RECORDINGS_DIR}/${START_TIMESTAMP}_${DURATION}.wav"
     TEMP_FILE="/tmp/birdnet/${RECORDING_KEY}"
-    
+
+    curl --fail http://localhost:5000/heartbeat/recorder
+
     echo "Recording for $DURATION seconds"
     
     # Record audio

@@ -1,5 +1,6 @@
 import json
 
+import arrow
 from loguru import logger
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -67,8 +68,38 @@ class SettingsView(TemplateView):
         return self.render_to_response(context)
 
 
-def healthcheck(request):
+service_state = {
+    "analyzer": arrow.now().timestamp(),
+    "recorder": arrow.now().timestamp(),
+}
+
+
+def analyzer_heartbeat(request: HttpRequest):
+    if request.method == "GET":
+        service_state["analyzer"] = arrow.now().timestamp()
     return HttpResponse(status=204)
+
+
+def recorder_heartbeat(request: HttpRequest):
+    if request.method == "GET":
+        service_state["recorder"] = arrow.now().timestamp()
+    return HttpResponse(status=204)
+
+
+class HealthcheckView(TemplateView):
+    template_name = "partials/healthcheck.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        now = arrow.now().timestamp()
+        healthcheck = {
+            "recorder": not (now - service_state["recorder"] > 30),
+            "analyzer": not (now - service_state["analyzer"] > 30),
+        }
+        context = {"healthcheck": healthcheck}
+
+        return context
 
 
 @ensure_csrf_cookie

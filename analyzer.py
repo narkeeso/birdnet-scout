@@ -6,6 +6,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+# Silences annoying tensorflow logs
+import silence_tensorflow.auto  # type: ignore # noqa: F401 # pylint: disable=unused-import
 from birdnet import SpeciesPredictions, predict_species_within_audio_file  # type: ignore
 from birdnet.location_based_prediction import predict_species_at_location_and_time  # type: ignore
 from birdnet.models.v2m4.model_v2m4_tflite import AudioModelV2M4TFLite

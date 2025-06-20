@@ -12,6 +12,8 @@ echo "Starting WAV file monitor (checking every $SLEEP_SECONDS seconds)..."
 echo "Press Ctrl+C to stop"
 
 while true; do
+    curl --fail http://localhost:5000/heartbeat/analzyer
+
     # Find WAV files
     wav_files=$(find "$RECORDINGS_DIR" -type f -name "*.wav")
 
@@ -19,8 +21,6 @@ while true; do
     if [ -n "$wav_files" ]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Found WAV files"
         poetry run python -m analyzer
-    else
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - No WAV files found in $RECORDINGS_DIR"
     fi
 
     sleep "$SLEEP_SECONDS"

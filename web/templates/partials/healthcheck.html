@@ -1,0 +1,17 @@
+<div class="notification">
+  <p class="title is-6">Service Health</p>
+  <div class="columns">
+    <div class="column">
+      Analzyer:
+      <span class="tag {{ healthcheck.analyzer|yesno:'is-success,is-danger' }}">
+        {{ healthcheck.analyzer|yesno:'Running,Down' }}
+      </span>
+    </div>
+    <div class="column">
+      Recorder
+      <span class="tag {{ healthcheck.recorder|yesno:'is-success,is-danger' }}">
+        {{ healthcheck.recorder|yesno:'Running,Down' }}
+      </span>
+    </div>
+  </div>
+</div>
