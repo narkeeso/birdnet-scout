@@ -5,8 +5,9 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.forms.models import model_to_dict
 from django.views.generic.base import TemplateView
+from django.shortcuts import redirect
 
-from . import models
+from . import models, forms
 
 
 class HomeView(TemplateView):
@@ -37,6 +38,33 @@ class DetectionsView(TemplateView):
 
 class SettingsView(TemplateView):
     template_name = "settings.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        config = models.Config.config.get_config()
+        context["config_form"] = forms.SettingsForm(
+            data={
+                "min_location_confidence": config.min_location_confidence,
+                "min_audio_confidence": config.min_audio_confidence,
+            }
+        )
+        return context
+
+    def post(self, request: HttpRequest):
+        config = models.Config.config.get(pk=1)
+        form = forms.SettingsForm(request.POST)
+
+        if form.is_valid():
+            config.min_audio_confidence = form.cleaned_data["min_audio_confidence"]
+            config.min_location_confidence = form.cleaned_data[
+                "min_location_confidence"
+            ]
+            config.save()
+            return redirect("settings-view")
+
+        context = self.get_context_data()
+        context["config_form"] = form
+        return self.render_to_response(context)
 
 
 def healthcheck(request):

@@ -1,8 +1,27 @@
 :root {
-  --bulma-family-primary: InterVariable,SF Pro,Segoe UI,Roboto,Oxygen,Ubuntu,Helvetica Neue,Helvetica,Arial,sans-serif;
-  --bulma-family-secondary: InterVariable,SF Pro,Segoe UI,Roboto,Oxygen,Ubuntu,Helvetica Neue,Helvetica,Arial,sans-serif;
+  --bulma-family-primary: InterVariable, SF Pro, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
+  --bulma-family-secondary: InterVariable, SF Pro, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-.navbar-item img, .navbar-item svg {
-  --bulma-navbar-item-img-max-height: 4rem
+.navbar-item img,
+.navbar-item svg {
+  --bulma-navbar-item-img-max-height: 4rem;
+}
+
+.icon.is-small ion-icon {
+  font-size: 1em;
+}
+
+.icon ion-icon {
+  font-size: 1.5em;
+}
+
+.icon.is-medium ion-icon {
+  font-size: 2em;
+}
+
+.icon.is-large ion-icon {
+  font-size: 3em;
 }

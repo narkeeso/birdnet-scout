@@ -1,4 +1,5 @@
 from typing import Dict, List
+from dateutil.tz import tzlocal
 
 import arrow
 from django.db import models
@@ -24,9 +25,9 @@ class ConfigManager(models.Manager):
 
 class Config(models.Model):
     location = models.JSONField()
-    min_sample_threshold = models.SmallIntegerField()
     min_audio_confidence = models.SmallIntegerField()
     min_location_confidence = models.SmallIntegerField()
+    min_sample_threshold = models.SmallIntegerField()
     timezone = models.CharField(default="US/Pacific")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -36,7 +37,7 @@ class Config(models.Model):
 
 class DetectionQuerySet(models.QuerySet["Detection"]):
     def get_valid(self, config: Config):
-        timezone.activate(config.timezone)
+        timezone.activate(tzlocal())
 
         return (
             self.annotate(date=TruncDate("recording_start"))
