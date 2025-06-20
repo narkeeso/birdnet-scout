@@ -10,12 +10,12 @@
   --bulma-navbar-item-img-max-height: 4rem;
 }
 
-.icon.is-small ion-icon {
-  font-size: 1em;
-}
-
 .icon ion-icon {
   font-size: 1.5em;
+}
+
+.icon.is-small ion-icon {
+  font-size: 1em;
 }
 
 .icon.is-medium ion-icon {
