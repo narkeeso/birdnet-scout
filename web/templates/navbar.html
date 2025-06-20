@@ -1,31 +1,34 @@
 {% load static %}
 <nav id="nav" class="navbar">
-  <div class="container">
-    <div class="navbar-brand">
-      <a href="{% url 'home-view' %}" class="navbar-item">
-        <img src="{% static 'web/logo.png' %}"
-             alt="Birdnet Scout Logo"
-             width=""
-             height="" />
-        <span class="title is-4">Scout</span>
-      </a>
+  <div class="navbar-brand">
+    <a href="{% url 'home-view' %}" class="navbar-item">
+      <img src="{% static 'web/logo.png' %}"
+           alt="Birdnet Scout Logo"
+           width=""
+           height="" />
+      <span class="title is-4">Scout</span>
+    </a>
+  </div>
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <span class="icon-text">
+        <i class="icon">
+          <ion-icon name="location-outline"></ion-icon>
+        </i>
+        {% if config.location.city %}
+          <span>{{ config.location.city }}, {{ config.location.region }}</span>
+        {% else %}
+          <span>Unknown</span>
+        {% endif %}
+      </span>
     </div>
-    <div class="navbar-end">
-      <div class="navbar-item">
-        {% csrf_token %}
-        <a hx-post="{% url 'update-location' %}"
-           class="button is-ghost"
-           hx-swap="outerHTML"
-           h-target="nav">Update Location</a>
-      </div>
-      {% if config.location.city %}
-        <div class="navbar-item">{{ config.location.city }}, {{ config.location.region }}</div>
-      {% else %}
-        <div class="navbar-item">Unknown</div>
-      {% endif %}
-      <div class="navbar-item">
-        <a href="{% url 'settings-view' %}" class="button is-ghost">Settings</a>
-      </div>
+    <div class="navbar-item">
+      <a href="{% url 'settings-view' %}" class="button is-ghost">
+        <i class="icon">
+          <ion-icon name="settings-outline"></ion-icon>
+        </i>
+        <span>Settings</span>
+      </a>
     </div>
   </div>
 </nav>

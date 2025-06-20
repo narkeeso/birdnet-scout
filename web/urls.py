@@ -9,7 +9,6 @@ urlpatterns = [
     path("views/settings", views.SettingsView.as_view(), name="settings-view"),
     # API Routes
     path("healthcheck/", views.healthcheck),
-    path("api/location", views.update_location, name="update-location"),
     path("api/config", views.get_config),
     path("api/detections", views.create_detections),
 ]

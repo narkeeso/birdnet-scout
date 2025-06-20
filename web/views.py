@@ -1,13 +1,13 @@
 import json
 
-import requests
+from loguru import logger
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.forms.models import model_to_dict
 from django.views.generic.base import TemplateView
 from django.shortcuts import redirect
 
-from . import models, forms
+from . import models, forms, services
 
 
 class HomeView(TemplateView):
@@ -75,6 +75,13 @@ def healthcheck(request):
 def get_config(request):
     if request.method == "GET":
         config = models.Config.config.get_config()
+
+        # Best attempt to update location
+        try:
+            services.update_location(config)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.exception(e)
+
         payload = model_to_dict(config)
         return JsonResponse(payload)
     return HttpResponse(status=405)
@@ -114,13 +121,3 @@ def create_detections(request):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
     return HttpResponse(status=405)  # Method Not Allowed
-
-
-def update_location(request: HttpRequest):
-    session = requests.Session()
-    response = session.get("https://api.ipify.org", timeout=5)
-    ip_address = response.text
-    response = session.get(f"http://ip-api.com/json/{ip_address}", timeout=5)
-    data = response.json()
-    models.Config.config.update(id=1, location=data)
-    return HttpResponse(status=204, headers={"HX-Refresh": "true"})
