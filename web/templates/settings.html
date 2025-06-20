@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-  <section class="section">
-    <div class="container"
-         hx-get="{% url 'healthcheck' %}"
-         hx-trigger="every 10s,load">{% include "partials/healthcheck.html" %}</div>
-  </section>
   <div class="section">
     <div class="container">
       <h2 class="title is-2">Settings</h2>
@@ -28,4 +23,9 @@
       </form>
     </div>
   </div>
+  <section class="section">
+    <div class="container"
+         hx-get="{% url 'healthcheck' %}"
+         hx-trigger="every 10s,load">{% include "partials/healthcheck.html" %}</div>
+  </section>
 {% endblock content %}
